@@ -1,0 +1,357 @@
+/* ============================================
+   DEALKEY SETTINGS PAGE — CSS
+   Full tab settings interface
+   ============================================ */
+
+:root {
+  --color-bg: #F7F3ED;
+  --color-bg-warm: #F0EBE3;
+  --color-bg-card: #FFFFFF;
+  --color-sage: #6B8F6B;
+  --color-sage-light: #7FA37F;
+  --color-sage-dark: #5A7A5A;
+  --color-sage-bg: rgba(107, 143, 107, 0.08);
+  --color-charcoal: #2A2825;
+  --color-charcoal-light: #4A4742;
+  --color-charcoal-muted: #7A7672;
+  --color-terracotta: #C4785A;
+  --color-border: rgba(42, 40, 37, 0.08);
+  --color-border-strong: rgba(42, 40, 37, 0.15);
+  --color-success: #5A8F5A;
+  --color-error: #C45A5A;
+
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-pill: 100px;
+
+  --shadow-soft: 0 2px 12px rgba(42, 40, 37, 0.06);
+  --shadow-card: 0 4px 24px rgba(42, 40, 37, 0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-charcoal);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+.settings-container {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.settings-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.settings-header__logo {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--color-charcoal);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.settings-header__subtitle {
+  font-size: 0.9rem;
+  color: var(--color-charcoal-muted);
+}
+
+/* ============================================
+   PROVIDER SELECTION
+   ============================================ */
+.provider-section {
+  margin-bottom: 32px;
+}
+
+.provider-section__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-charcoal-muted);
+  margin-bottom: 12px;
+}
+
+.provider-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.provider-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.provider-card:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-soft);
+}
+
+.provider-card.selected {
+  border-color: var(--color-sage);
+  background: var(--color-sage-bg);
+}
+
+.provider-card input[type="radio"] {
+  display: none;
+}
+
+.provider-card__radio {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.provider-card.selected .provider-card__radio {
+  border-color: var(--color-sage);
+}
+
+.provider-card.selected .provider-card__radio::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: var(--color-sage);
+  border-radius: 50%;
+}
+
+.provider-card__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-charcoal-muted);
+}
+
+.provider-card.selected .provider-card__icon {
+  background: var(--color-sage);
+  color: #fff;
+}
+
+.provider-card__info { flex: 1; }
+
+.provider-card__name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-charcoal);
+}
+
+.provider-card__badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  background: var(--color-sage-bg);
+  color: var(--color-sage);
+  border-radius: var(--radius-pill);
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.provider-card__desc {
+  font-size: 0.82rem;
+  color: var(--color-charcoal-muted);
+  margin-top: 2px;
+}
+
+/* ============================================
+   API KEY INPUT
+   ============================================ */
+.key-section {
+  margin-bottom: 32px;
+}
+
+.key-section__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-charcoal-muted);
+  margin-bottom: 10px;
+}
+
+.key-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.key-input-wrapper:focus-within {
+  border-color: var(--color-sage);
+  box-shadow: 0 0 0 3px var(--color-sage-bg);
+}
+
+.key-input {
+  flex: 1;
+  padding: 14px 16px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--color-charcoal);
+  outline: none;
+}
+
+.key-input::placeholder {
+  color: var(--color-charcoal-muted);
+  opacity: 0.5;
+  font-family: var(--font-sans);
+}
+
+.key-toggle {
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  border-left: 1px solid var(--color-border);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-charcoal-muted);
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+
+.key-toggle:hover {
+  color: var(--color-sage);
+}
+
+/* ============================================
+   SAVE BUTTON
+   ============================================ */
+.save-section {
+  margin-bottom: 24px;
+}
+
+.btn-save {
+  width: 100%;
+  padding: 14px;
+  background: var(--color-sage);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-save:hover {
+  background: var(--color-sage-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-card);
+}
+
+.btn-save:active {
+  transform: translateY(0);
+}
+
+.btn-save.saving {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.btn-save.saved {
+  background: var(--color-success);
+}
+
+/* Toast */
+.toast {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.toast.visible { opacity: 1; }
+.toast.success { color: var(--color-success); }
+.toast.error { color: var(--color-error); }
+
+/* ============================================
+   PRIVACY NOTE
+   ============================================ */
+.privacy-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--color-sage-bg);
+  border-radius: var(--radius-md);
+  margin-top: 24px;
+}
+
+.privacy-note svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  stroke: var(--color-sage);
+  margin-top: 1px;
+}
+
+.privacy-note__text {
+  font-size: 0.82rem;
+  color: var(--color-sage-dark);
+  line-height: 1.5;
+}
+
+.privacy-note__text strong {
+  font-weight: 700;
+}
+
+/* ============================================
+   RESPONSIVE — settings tab is wider
+   ============================================ */
+@media (max-width: 480px) {
+  .settings-container {
+    padding: 32px 16px;
+  }
+}

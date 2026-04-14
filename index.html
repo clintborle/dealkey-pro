@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DealKey — Your AI finds the deals. You keep the savings.</title>
+  <meta name="description" content="DealKey is a Chrome extension that uses your own AI key to find discount codes. No tracking, no servers, no affiliate hijacking. $19 once, or free on GitHub.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      --color-bg: #F7F3ED;
+      --color-bg-warm: #F0EBE3;
+      --color-bg-card: #FFFFFF;
+      --color-sage: #6B8F6B;
+      --color-sage-light: #7FA37F;
+      --color-sage-dark: #5A7A5A;
+      --color-sage-bg: rgba(107, 143, 107, 0.08);
+      --color-charcoal: #2A2825;
+      --color-charcoal-light: #4A4742;
+      --color-charcoal-muted: #7A7672;
+      --color-terracotta: #C4785A;
+      --color-terracotta-light: #D4906F;
+      --color-terracotta-bg: rgba(196, 120, 90, 0.1);
+      --color-border: rgba(42, 40, 37, 0.08);
+      --color-border-strong: rgba(42, 40, 37, 0.15);
+
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'DM Sans', system-ui, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-pill: 100px;
+
+      --shadow-soft: 0 2px 20px rgba(42, 40, 37, 0.06);
+      --shadow-card: 0 4px 30px rgba(42, 40, 37, 0.08);
+      --shadow-elevated: 0 8px 40px rgba(42, 40, 37, 0.12);
+
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 1.5rem;
+      --space-lg: 2.5rem;
+      --space-xl: 4rem;
+      --space-2xl: 6rem;
+      --space-3xl: 8rem;
+
+      --max-width: 1200px;
+      --max-width-narrow: 800px;
+    }
+
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--color-charcoal);
+      background: var(--color-bg);
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; font-family: inherit; }
+
+    /* ============================================
+       TYPOGRAPHY
+       ============================================ */
+    h1, h2, h3, h4 {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      line-height: 1.2;
+      color: var(--color-charcoal);
+    }
+
+    h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); letter-spacing: -0.02em; }
+    h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); letter-spacing: -0.01em; }
+    h3 { font-size: clamp(1.3rem, 2vw, 1.6rem); }
+    h4 { font-size: 1.15rem; }
+
+    .text-muted { color: var(--color-charcoal-muted); }
+    .text-serif { font-family: var(--font-serif); }
+    .text-mono { font-family: var(--font-mono); }
+
+    /* ============================================
+       LAYOUT
+       ============================================ */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    .container--narrow {
+      max-width: var(--max-width-narrow);
+    }
+
+    section {
+      padding: var(--space-3xl) 0;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.8rem;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .btn--primary {
+      background: var(--color-sage);
+      color: #fff;
+    }
+    .btn--primary:hover {
+      background: var(--color-sage-dark);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-card);
+    }
+
+    .btn--secondary {
+      background: transparent;
+      color: var(--color-charcoal);
+      border: 1.5px solid var(--color-border-strong);
+    }
+    .btn--secondary:hover {
+      border-color: var(--color-sage);
+      color: var(--color-sage);
+      transform: translateY(-1px);
+    }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--color-sage);
+      padding: 0.85rem 1rem;
+    }
+    .btn--ghost:hover {
+      background: var(--color-sage-bg);
+    }
+
+    .btn--sm {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.85rem;
+    }
+
+    /* ============================================
+       NAV
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(247, 243, 237, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--color-border);
+      transition: all 0.3s ease;
+    }
+
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 1rem var(--space-md);
+    }
+
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-charcoal);
+      letter-spacing: -0.02em;
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+      list-style: none;
+    }
+
+    .nav__link {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--color-charcoal-muted);
+      transition: color 0.2s ease;
+    }
+    .nav__link:hover { color: var(--color-charcoal); }
+
+    .nav__cta {
+      margin-left: var(--space-sm);
+    }
+
+    .nav__mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      padding: 0.5rem;
+    }
+
+    .nav__mobile-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--color-charcoal);
+      margin: 5px 0;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* ============================================
+       HERO
+       ============================================ */
+    .hero {
+      padding: calc(var(--space-3xl) + 80px) 0 var(--space-3xl);
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+      align-items: center;
+    }
+
+    .hero__content { max-width: 560px; }
+
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 1rem;
+      background: var(--color-sage-bg);
+      color: var(--color-sage);
+      border-radius: var(--radius-pill);
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: var(--space-md);
+    }
+
+    .hero__badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--color-sage);
+      border-radius: 50%;
+    }
+
+    .hero__title {
+      margin-bottom: var(--space-md);
+    }
+
+    .hero__subtitle {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--color-charcoal-muted);
+      margin-bottom: var(--space-lg);
+      max-width: 480px;
+    }
+
+    .hero__buttons {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+    }
+
+    .hero__visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    /* Floating extension popup mockup */
+    .popup-mockup {
+      width: 320px;
+      background: var(--color-bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-elevated);
+      padding: var(--space-md);
+      animation: float 6s ease-in-out infinite;
+      position: relative;
+    }
+
+    .popup-mockup::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -40px;
+      width: 120px;
+      height: 120px;
+      background: var(--color-sage-bg);
+      border-radius: 50%;
+      z-index: -1;
+    }
+
+    .popup-mockup::after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      left: -30px;
+      width: 80px;
+      height: 80px;
+      background: var(--color-terracotta-bg);
+      border-radius: 50%;
+      z-index: -1;
+    }
+
+    .popup-mockup__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-sm);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .popup-mockup__store {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .popup-mockup__badge {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.6rem;
+      background: var(--color-sage-bg);
+      color: var(--color-sage);
+      border-radius: var(--radius-pill);
+      font-weight: 600;
+    }
+
+    .popup-mockup__deal {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem;
+      background: var(--color-bg);
+      border-radius: var(--radius-md);
+      margin-bottom: 0.5rem;
+    }
+
+    .popup-mockup__code {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--color-sage-dark);
+    }
+
+    .popup-mockup__desc {
+      font-size: 0.75rem;
+      color: var(--color-charcoal-muted);
+    }
+
+    .popup-mockup__apply {
+      font-size: 0.75rem;
+      padding: 0.35rem 0.8rem;
+      background: var(--color-sage);
+      color: #fff;
+      border-radius: var(--radius-pill);
+      font-weight: 600;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      33% { transform: translateY(-12px) rotate(0.5deg); }
+      66% { transform: translateY(-6px) rotate(-0.3deg); }
+    }
+
+    /* ============================================
+       TRUST BAR
+       ============================================ */
+    .trust {
+      padding: var(--space-xl) 0;
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .trust__items {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-sm) var(--space-lg);
+    }
+
+    .trust__item {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--color-charcoal-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .trust__dot {
+      width: 4px;
+      height: 4px;
+      background: var(--color-sage);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ============================================
+       HOW IT WORKS
+       ============================================ */
+    .how-it-works { background: var(--color-bg); }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .section-header__label {
+      display: inline-block;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-sage);
+      margin-bottom: var(--space-sm);
+    }
+
+    .section-header p {
+      max-width: 500px;
+      margin: var(--space-sm) auto 0;
+      color: var(--color-charcoal-muted);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-md);
+    }
+
+    .step-card {
+      background: var(--color-bg-card);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      box-shadow: var(--shadow-soft);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .step-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-card);
+    }
+
+    .step-card__number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: var(--color-sage-bg);
+      color: var(--color-sage);
+      border-radius: 50%;
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: var(--space-sm);
+    }
+
+    .step-card__title {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-card__desc {
+      font-size: 0.9rem;
+      color: var(--color-charcoal-muted);
+      line-height: 1.6;
+    }
+
+    .step-card__time {
+      display: inline-block;
+      margin-top: 0.75rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--color-sage);
+      background: var(--color-sage-bg);
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-pill);
+    }
+
+    /* ============================================
+       API KEY SETUP
+       ============================================ */
+    .api-setup {
+      background: var(--color-bg-warm);
+    }
+
+    .api-tabs {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: var(--space-lg);
+    }
+
+    .api-tab {
+      padding: 0.6rem 1.4rem;
+      border-radius: var(--radius-pill);
+      background: transparent;
+      border: 1.5px solid var(--color-border-strong);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-charcoal-muted);
+      transition: all 0.3s ease;
+    }
+
+    .api-tab.active {
+      background: var(--color-sage);
+      color: #fff;
+      border-color: var(--color-sage);
+    }
+
+    .api-tab:hover:not(.active) {
+      border-color: var(--color-sage);
+      color: var(--color-sage);
+    }
+
+    .api-tab-content {
+      display: none;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .api-tab-content.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .api-steps {
+      background: var(--color-bg-card);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .api-step {
+      display: flex;
+      gap: var(--space-sm);
+      padding: var(--space-sm) 0;
+    }
+
+    .api-step + .api-step {
+      border-top: 1px solid var(--color-border);
+    }
+
+    .api-step__num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      background: var(--color-sage-bg);
+      color: var(--color-sage);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .api-step__text {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .api-step__text a {
+      color: var(--color-sage);
+      font-weight: 600;
+      border-bottom: 1px solid var(--color-sage-bg);
+      transition: border-color 0.2s;
+    }
+
+    .api-step__text a:hover {
+      border-color: var(--color-sage);
+    }
+
+    .api-cost {
+      text-align: center;
+      margin-top: var(--space-md);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--color-sage-bg);
+      border-radius: var(--radius-pill);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--color-sage-dark);
+    }
+
+    .api-cost-wrapper {
+      text-align: center;
+    }
+
+    /* ============================================
+       WHAT HONEY DID
+       ============================================ */
+    .honey-section { background: var(--color-bg); }
+
+    .honey-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+    }
+
+    .honey-card {
+      background: var(--color-bg-card);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      box-shadow: var(--shadow-soft);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .honey-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--color-terracotta);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+
+    .honey-card__stat {
+      font-family: var(--font-serif);
+      font-size: clamp(2.4rem, 4vw, 3.2rem);
+      font-weight: 700;
+      color: var(--color-terracotta);
+      margin-bottom: 0.25rem;
+    }
+
+    .honey-card__label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--color-charcoal);
+      margin-bottom: 0.5rem;
+    }
+
+    .honey-card__desc {
+      font-size: 0.85rem;
+      color: var(--color-charcoal-muted);
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       COMPARISON TABLE
+       ============================================ */
+    .comparison { background: var(--color-bg-warm); }
+
+    .comparison-table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: var(--color-bg-card);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      min-width: 600px;
+    }
+
+    .comparison-table thead th {
+      padding: 1.2rem 1.5rem;
+      text-align: left;
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: var(--color-bg);
+      border-bottom: 2px solid var(--color-border);
+    }
+
+    .comparison-table thead th:first-child {
+      border-radius: var(--radius-lg) 0 0 0;
+    }
+
+    .comparison-table thead th:last-child {
+      border-radius: 0 var(--radius-lg) 0 0;
+    }
+
+    .comparison-table thead th.highlight {
+      background: var(--color-sage);
+      color: #fff;
+    }
+
+    .comparison-table td {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+      font-size: 0.9rem;
+    }
+
+    .comparison-table td:first-child {
+      font-weight: 600;
+      color: var(--color-charcoal);
+    }
+
+    .comparison-table td.highlight {
+      background: var(--color-sage-bg);
+    }
+
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .check { color: var(--color-sage); font-weight: 700; }
+    .cross { color: var(--color-charcoal-muted); opacity: 0.4; }
+
+    /* ============================================
+       PRICING
+       ============================================ */
+    .pricing { background: var(--color-bg); }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-md);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .pricing-card {
+      background: var(--color-bg-card);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-card);
+    }
+
+    .pricing-card--featured {
+      border: 2px solid var(--color-sage);
+    }
+
+    .pricing-card--featured::before {
+      content: 'Most popular';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-sage);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 1rem;
+      border-radius: var(--radius-pill);
+      white-space: nowrap;
+    }
+
+    .pricing-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .pricing-card__price {
+      font-family: var(--font-serif);
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--color-charcoal);
+      margin-bottom: 0.25rem;
+    }
+
+    .pricing-card__price span {
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--color-charcoal-muted);
+    }
+
+    .pricing-card__desc {
+      font-size: 0.9rem;
+      color: var(--color-charcoal-muted);
+      margin-bottom: var(--space-md);
+    }
+
+    .pricing-card__features {
+      list-style: none;
+      margin-bottom: var(--space-lg);
+    }
+
+    .pricing-card__features li {
+      padding: 0.4rem 0;
+      font-size: 0.9rem;
+      color: var(--color-charcoal-light);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .pricing-card__features li::before {
+      content: '';
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      background: var(--color-sage-bg);
+      border-radius: 50%;
+      margin-top: 2px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B8F6B' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+      background-size: 12px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    /* ============================================
+       FAQ
+       ============================================ */
+    .faq { background: var(--color-bg-warm); }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-sm);
+    }
+
+    .faq-card {
+      background: var(--color-bg-card);
+      border-radius: var(--radius-lg);
+      padding: var(--space-md);
+      box-shadow: var(--shadow-soft);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .faq-card:hover {
+      box-shadow: var(--shadow-card);
+    }
+
+    .faq-card__question {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--space-sm);
+    }
+
+    .faq-card__toggle {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--color-sage-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+
+    .faq-card__toggle svg {
+      width: 12px;
+      height: 12px;
+      stroke: var(--color-sage);
+      transition: transform 0.3s ease;
+    }
+
+    .faq-card.open .faq-card__toggle svg {
+      transform: rotate(45deg);
+    }
+
+    .faq-card__answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, margin 0.3s ease;
+    }
+
+    .faq-card.open .faq-card__answer {
+      max-height: 300px;
+      margin-top: var(--space-sm);
+    }
+
+    .faq-card__answer p {
+      font-size: 0.9rem;
+      color: var(--color-charcoal-muted);
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--color-charcoal);
+      color: rgba(255, 255, 255, 0.7);
+      padding: var(--space-xl) 0;
+    }
+
+    .footer__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+
+    .footer__brand {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .footer__logo {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .footer__tagline {
+      font-size: 0.85rem;
+      opacity: 0.6;
+    }
+
+    .footer__links {
+      display: flex;
+      gap: var(--space-md);
+      list-style: none;
+    }
+
+    .footer__link {
+      font-size: 0.88rem;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    .footer__link:hover { opacity: 1; }
+
+    .footer__built {
+      font-size: 0.82rem;
+      opacity: 0.4;
+    }
+
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 1024px) {
+      .hero__grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+      .hero__visual { order: -1; }
+      .hero__content { max-width: 100%; text-align: center; }
+      .hero__subtitle { margin-left: auto; margin-right: auto; }
+      .hero__buttons { justify-content: center; }
+      .steps-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      section { padding: var(--space-2xl) 0; }
+      .nav__links { display: none; }
+      .nav__mobile-toggle { display: block; }
+      .nav.mobile-open .nav__links {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--color-bg);
+        padding: var(--space-md);
+        border-bottom: 1px solid var(--color-border);
+        box-shadow: var(--shadow-card);
+      }
+      .nav.mobile-open .nav__links .nav__cta {
+        margin-left: 0;
+        margin-top: var(--space-sm);
+      }
+      .honey-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .footer__inner { flex-direction: column; text-align: center; }
+      .footer__links { justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .hero { min-height: auto; padding-top: calc(var(--space-2xl) + 80px); }
+      .popup-mockup { width: 280px; }
+      .hero__buttons { flex-direction: column; width: 100%; }
+      .hero__buttons .btn { width: 100%; justify-content: center; }
+      .api-tabs { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== NAV ========== -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo">DealKey</a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#how-it-works" class="nav__link">How it works</a></li>
+        <li><a href="#api-setup" class="nav__link">Get your key</a></li>
+        <li><a href="#pricing" class="nav__link">Pricing</a></li>
+        <li><a href="https://github.com/dealkey/dealkey" class="nav__link" target="_blank" rel="noopener">GitHub</a></li>
+        <li class="nav__cta"><a href="#pricing" class="btn btn--primary btn--sm">Get DealKey — $19</a></li>
+      </ul>
+      <button class="nav__mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero__grid">
+        <div class="hero__content fade-in">
+          <div class="hero__badge">Chrome Extension</div>
+          <h1 class="hero__title">Your AI finds the deals.<br>You keep the savings.</h1>
+          <p class="hero__subtitle">
+            A browser extension that uses your own AI key to find real discount codes at checkout. No tracking, no data harvesting, no middlemen.
+          </p>
+          <div class="hero__buttons">
+            <a href="#pricing" class="btn btn--primary">Get Pro — $19</a>
+            <a href="https://github.com/dealkey/dealkey" class="btn btn--secondary" target="_blank" rel="noopener">Free on GitHub</a>
+          </div>
+        </div>
+        <div class="hero__visual fade-in">
+          <div class="popup-mockup">
+            <div class="popup-mockup__header">
+              <span class="popup-mockup__store">Patagonia</span>
+              <span class="popup-mockup__badge">Checkout detected</span>
+            </div>
+            <div class="popup-mockup__deal">
+              <div>
+                <div class="popup-mockup__code">WINTER25</div>
+                <div class="popup-mockup__desc">25% off full price items</div>
+              </div>
+              <span class="popup-mockup__apply">Apply</span>
+            </div>
+            <div class="popup-mockup__deal">
+              <div>
+                <div class="popup-mockup__code">FREESHIP</div>
+                <div class="popup-mockup__desc">Free standard shipping</div>
+              </div>
+              <span class="popup-mockup__apply">Apply</span>
+            </div>
+            <div class="popup-mockup__deal">
+              <div>
+                <div class="popup-mockup__code">GEAR10</div>
+                <div class="popup-mockup__desc">10% off gear &amp; accessories</div>
+              </div>
+              <span class="popup-mockup__apply">Apply</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TRUST BAR ========== -->
+  <section class="trust">
+    <div class="container">
+      <div class="trust__items">
+        <span class="trust__item"><span class="trust__dot"></span>No tracking</span>
+        <span class="trust__item"><span class="trust__dot"></span>No servers</span>
+        <span class="trust__item"><span class="trust__dot"></span>No affiliate hijacking</span>
+        <span class="trust__item"><span class="trust__dot"></span>Open source</span>
+        <span class="trust__item"><span class="trust__dot"></span>$19 once</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== HOW IT WORKS ========== -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-header__label">How it works</span>
+        <h2>Four steps. Five minutes. Done forever.</h2>
+        <p>No accounts to create, no extensions phoning home, no hidden catches.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card fade-in">
+          <div class="step-card__number">1</div>
+          <h4 class="step-card__title">Install the extension</h4>
+          <p class="step-card__desc">One click from the Chrome Web Store, or clone it free from GitHub.</p>
+          <span class="step-card__time">1 click</span>
+        </div>
+        <div class="step-card fade-in">
+          <div class="step-card__number">2</div>
+          <h4 class="step-card__title">Add your AI key</h4>
+          <p class="step-card__desc">Grab an API key from Claude, OpenAI, or OpenRouter. Takes five minutes, costs pennies.</p>
+          <span class="step-card__time">5 min setup</span>
+        </div>
+        <div class="step-card fade-in">
+          <div class="step-card__number">3</div>
+          <h4 class="step-card__title">Shop as normal</h4>
+          <p class="step-card__desc">The extension quietly watches for checkout pages. No interruptions, no popups until you need one.</p>
+        </div>
+        <div class="step-card fade-in">
+          <div class="step-card__number">4</div>
+          <h4 class="step-card__title">Apply the best code</h4>
+          <p class="step-card__desc">Click to copy or auto-apply. DealKey shows confidence levels so you know which codes are worth trying.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== API KEY SETUP ========== -->
+  <section class="api-setup" id="api-setup">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-header__label">Get your key</span>
+        <h2>Your key, your AI, your privacy</h2>
+        <p>DealKey runs on your own API key. That means zero servers, zero data collection, and searches that cost less than a penny.</p>
+      </div>
+
+      <div class="api-tabs fade-in">
+        <button class="api-tab active" data-tab="claude">Claude (recommended)</button>
+        <button class="api-tab" data-tab="openai">OpenAI</button>
+        <button class="api-tab" data-tab="openrouter">OpenRouter</button>
+      </div>
+
+      <div class="api-tab-content active" id="tab-claude">
+        <div class="api-steps">
+          <div class="api-step">
+            <span class="api-step__num">1</span>
+            <div class="api-step__text">Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and create a free account</div>
+          </div>
+          <div class="api-step">
+            <span class="api-step__num">2</span>
+            <div class="api-step__text">Add $5 in API credits — this lasts months of daily shopping</div>
+          </div>
+          <div class="api-step">
+            <span class="api-step__num">3</span>
+            <div class="api-step__text">Go to <strong>Settings → API Keys → Create Key</strong></div>
+          </div>
+          <div class="api-step">
+            <span class="api-step__num">4</span>
+            <div class="api-step__text">Copy the key and paste it into DealKey settings. That's it.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="api-tab-content" id="tab-openai">
+        <div class="api-steps">
+          <div class="api-step">
+            <span class="api-step__num">1</span>
+            <div class="api-step__text">Go to <a href="https://platform.openai.com" target="_blank" rel="noopener">platform.openai.com</a> and sign in</div>
+          </div>
+          <div class="api-step">
+            <span class="api-step__num">2</span>
+            <div class="api-step__text">Navigate to <strong>API Keys</strong> in the left sidebar</div>
+          </div>
+          <div class="api-step">
+            <span class="api-step__num">3</span>
+            <div class="api-step__text">Click <strong>Create new secret key</strong> and add $5 in credits</div>
+          </div>
+          <div class="api-step">
+            <span class="api-step__num">4</span>
+            <div class="api-step__text">Copy the key and paste it into DealKey settings</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="api-tab-content" id="tab-openrouter">
+        <div class="api-steps">
+          <div class="api-step">
+            <span class="api-step__num">1</span>
+            <div class="api-step__text">Go to <a href="https://openrouter.ai" target="_blank" rel="noopener">openrouter.ai</a> and create an account</div>
+          </div>
+          <div class="api-step">
+            <span class="api-step__num">2</span>
+            <div class="api-step__text">Add credits — OpenRouter lets you use any model from any provider</div>
+          </div>
+          <div class="api-step">
+            <span class="api-step__num">3</span>
+            <div class="api-step__text">Go to <strong>Keys</strong> and create a new API key</div>
+          </div>
+          <div class="api-step">
+            <span class="api-step__num">4</span>
+            <div class="api-step__text">Copy the key and paste it into DealKey settings</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="api-cost-wrapper fade-in">
+        <span class="api-cost">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          ~$0.001 per search. $5 lasts months.
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== WHAT HONEY DID ========== -->
+  <section class="honey-section" id="honey">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-header__label">Why this exists</span>
+        <h2>What Honey did with your trust</h2>
+        <p>Honey was sold as a deal-finder. It was actually a data-harvester. Here's what they built on your back.</p>
+      </div>
+      <div class="honey-grid">
+        <div class="honey-card fade-in">
+          <div class="honey-card__stat">$4B</div>
+          <div class="honey-card__label">PayPal acquisition price</div>
+          <p class="honey-card__desc">Built on a database of your shopping habits, clicks, and purchase history. You were the product.</p>
+        </div>
+        <div class="honey-card fade-in">
+          <div class="honey-card__stat">8.9M</div>
+          <div class="honey-card__label">Creators lost affiliate revenue</div>
+          <p class="honey-card__desc">Honey silently replaced creator affiliate links with their own, siphoning revenue from people you wanted to support.</p>
+        </div>
+        <div class="honey-card fade-in">
+          <div class="honey-card__stat">$0</div>
+          <div class="honey-card__label">Your real savings</div>
+          <p class="honey-card__desc">Studies showed Honey often surfaced expired or worse codes than what was already applied, while collecting your data.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== COMPARISON TABLE ========== -->
+  <section class="comparison" id="comparison">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-header__label">Compare</span>
+        <h2>A better deal on deal-finding</h2>
+      </div>
+      <div class="comparison-table-wrapper fade-in">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th class="highlight">DealKey Pro</th>
+              <th>DealKey Free</th>
+              <th>Honey</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AI-powered code search</td>
+              <td class="highlight"><span class="check">&#10003;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+            </tr>
+            <tr>
+              <td>Your data stays private</td>
+              <td class="highlight"><span class="check">&#10003;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+            </tr>
+            <tr>
+              <td>Open source</td>
+              <td class="highlight"><span class="check">&#10003;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+            </tr>
+            <tr>
+              <td>No affiliate hijacking</td>
+              <td class="highlight"><span class="check">&#10003;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+            </tr>
+            <tr>
+              <td>Auto-updates via Chrome Web Store</td>
+              <td class="highlight"><span class="check">&#10003;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+              <td><span class="check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Auto-apply codes</td>
+              <td class="highlight"><span class="check">&#10003;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Email support</td>
+              <td class="highlight"><span class="check">&#10003;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+              <td><span class="check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Price</td>
+              <td class="highlight"><strong>$19 once</strong></td>
+              <td><strong>Free</strong></td>
+              <td><strong>Free*</strong> <span style="font-size:0.78rem;color:var(--color-charcoal-muted);">(*you pay with data)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PRICING ========== -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-header__label">Pricing</span>
+        <h2>One price. No subscriptions. No surprises.</h2>
+      </div>
+      <div class="pricing-grid">
+        <div class="pricing-card fade-in">
+          <div class="pricing-card__name">Free</div>
+          <div class="pricing-card__price">$0</div>
+          <p class="pricing-card__desc">Clone from GitHub, same AI engine</p>
+          <ul class="pricing-card__features">
+            <li>Full AI-powered code search</li>
+            <li>All provider support (Claude, OpenAI, OpenRouter)</li>
+            <li>100% private, runs locally</li>
+            <li>Manual install from GitHub</li>
+            <li>Community support</li>
+          </ul>
+          <a href="https://github.com/dealkey/dealkey" class="btn btn--secondary" style="width:100%;justify-content:center;" target="_blank" rel="noopener">Get on GitHub</a>
+        </div>
+        <div class="pricing-card pricing-card--featured fade-in">
+          <div class="pricing-card__name">Pro</div>
+          <div class="pricing-card__price">$19 <span>one time</span></div>
+          <p class="pricing-card__desc">Install from Chrome Web Store in one click</p>
+          <ul class="pricing-card__features">
+            <li>Everything in Free</li>
+            <li>One-click Chrome Web Store install</li>
+            <li>Automatic updates</li>
+            <li>Email support</li>
+            <li>Support indie development</li>
+          </ul>
+          <a href="#" class="btn btn--primary" style="width:100%;justify-content:center;">Get DealKey Pro</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FAQ ========== -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-header__label">Questions</span>
+        <h2>Things you might be wondering</h2>
+      </div>
+      <div class="faq-grid">
+
+        <div class="faq-card fade-in">
+          <div class="faq-card__question">
+            How is this different from Honey?
+            <span class="faq-card__toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </div>
+          <div class="faq-card__answer">
+            <p>Honey uses a central server that tracks your shopping behavior and replaces affiliate links. DealKey runs entirely in your browser using your own AI key. No servers, no tracking, no affiliate hijacking.</p>
+          </div>
+        </div>
+
+        <div class="faq-card fade-in">
+          <div class="faq-card__question">
+            What does the AI actually cost per search?
+            <span class="faq-card__toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </div>
+          <div class="faq-card__answer">
+            <p>About $0.001 per search — roughly a tenth of a penny. A $5 credit on any provider will last months of daily shopping. You only pay when DealKey actually searches.</p>
+          </div>
+        </div>
+
+        <div class="faq-card fade-in">
+          <div class="faq-card__question">
+            Is my API key safe?
+            <span class="faq-card__toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </div>
+          <div class="faq-card__answer">
+            <p>Your API key is stored locally in Chrome's secure storage and never leaves your browser. DealKey has no servers, no analytics, no telemetry. The code is open source — verify for yourself.</p>
+          </div>
+        </div>
+
+        <div class="faq-card fade-in">
+          <div class="faq-card__question">
+            Why pay $19 when the free version exists?
+            <span class="faq-card__toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </div>
+          <div class="faq-card__answer">
+            <p>The Pro version from the Chrome Web Store gives you automatic updates, one-click install, and email support. It also supports independent development. The AI engine is identical in both versions.</p>
+          </div>
+        </div>
+
+        <div class="faq-card fade-in">
+          <div class="faq-card__question">
+            Which AI provider should I use?
+            <span class="faq-card__toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </div>
+          <div class="faq-card__answer">
+            <p>We recommend Claude (Anthropic) for the best results, but OpenAI and OpenRouter both work well. OpenRouter gives you access to multiple models from one key if you like flexibility.</p>
+          </div>
+        </div>
+
+        <div class="faq-card fade-in">
+          <div class="faq-card__question">
+            Does it work on every store?
+            <span class="faq-card__toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </div>
+          <div class="faq-card__answer">
+            <p>DealKey works on any website with a checkout page. It detects coupon fields automatically and searches for valid codes using AI. Results vary by store — some have more active codes than others.</p>
+          </div>
+        </div>
+
+        <div class="faq-card fade-in">
+          <div class="faq-card__question">
+            Can I see the source code?
+            <span class="faq-card__toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </div>
+          <div class="faq-card__answer">
+            <p>Yes. DealKey is fully open source. Every line of code is on GitHub. The Pro version from the Chrome Web Store is the same code — you're paying for convenience and support, not a different product.</p>
+          </div>
+        </div>
+
+        <div class="faq-card fade-in">
+          <div class="faq-card__question">
+            What data does DealKey collect?
+            <span class="faq-card__toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </div>
+          <div class="faq-card__answer">
+            <p>None. Zero. DealKey has no servers, no analytics, no tracking pixels, no telemetry. Your browsing stays in your browser. The only network requests are from your browser to the AI provider you chose.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__brand">
+          <span class="footer__logo">DealKey</span>
+          <span class="footer__tagline">Your AI. Your savings. Nothing in between.</span>
+        </div>
+        <ul class="footer__links">
+          <li><a href="#how-it-works" class="footer__link">How it works</a></li>
+          <li><a href="#pricing" class="footer__link">Pricing</a></li>
+          <li><a href="https://github.com/dealkey/dealkey" class="footer__link" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="mailto:hello@deal-key.com" class="footer__link">Contact</a></li>
+        </ul>
+        <span class="footer__built">Built with Claude</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script>
+    // Mobile nav toggle
+    document.getElementById('mobileToggle').addEventListener('click', () => {
+      document.getElementById('nav').classList.toggle('mobile-open');
+    });
+
+    // Close mobile nav on link click
+    document.querySelectorAll('.nav__link').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('nav').classList.remove('mobile-open');
+      });
+    });
+
+    // API tabs
+    document.querySelectorAll('.api-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.api-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.api-tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const wasOpen = card.classList.contains('open');
+        // Close all others in same grid
+        card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c => c.classList.remove('open'));
+        if (!wasOpen) card.classList.add('open');
+      });
+    });
+
+    // Scroll-triggered fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

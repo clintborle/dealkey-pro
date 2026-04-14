@@ -1,0 +1,377 @@
+/* ============================================
+   DEALKEY POPUP — CSS
+   360px wide Chrome extension popup
+   ============================================ */
+
+:root {
+  --color-bg: #F7F3ED;
+  --color-bg-warm: #F0EBE3;
+  --color-bg-card: #FFFFFF;
+  --color-sage: #6B8F6B;
+  --color-sage-light: #7FA37F;
+  --color-sage-dark: #5A7A5A;
+  --color-sage-bg: rgba(107, 143, 107, 0.08);
+  --color-charcoal: #2A2825;
+  --color-charcoal-light: #4A4742;
+  --color-charcoal-muted: #7A7672;
+  --color-terracotta: #C4785A;
+  --color-terracotta-bg: rgba(196, 120, 90, 0.1);
+  --color-border: rgba(42, 40, 37, 0.08);
+  --color-border-strong: rgba(42, 40, 37, 0.15);
+
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 100px;
+
+  --shadow-soft: 0 2px 12px rgba(42, 40, 37, 0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  width: 360px;
+  min-height: 200px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-charcoal);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.popup-logo {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-charcoal);
+}
+
+.popup-settings-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-charcoal-muted);
+  transition: all 0.2s ease;
+}
+
+.popup-settings-btn:hover {
+  background: var(--color-sage-bg);
+  color: var(--color-sage);
+}
+
+/* ============================================
+   STATE CONTAINERS
+   ============================================ */
+.popup-state { display: none; }
+.popup-state.active { display: block; }
+
+/* ============================================
+   STATE A — LOADING
+   ============================================ */
+.state-loading {
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-sage);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.state-loading__text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--color-charcoal-muted);
+}
+
+/* ============================================
+   STATE B — RESULTS
+   ============================================ */
+.state-results { padding: 0; }
+
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.results-store {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.results-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  background: var(--color-sage-bg);
+  color: var(--color-sage);
+  border-radius: var(--radius-pill);
+}
+
+.results-list {
+  padding: 8px 12px 12px;
+}
+
+/* Deal Card */
+.deal-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  margin-bottom: 8px;
+  transition: border-color 0.2s ease;
+}
+
+.deal-card:last-child { margin-bottom: 0; }
+
+.deal-card:hover {
+  border-color: var(--color-sage);
+}
+
+.deal-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.deal-card__code {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--color-sage-dark);
+  letter-spacing: 0.02em;
+}
+
+.deal-card__confidence {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.confidence-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-sage);
+}
+
+.confidence-dot--filled {
+  background: var(--color-sage);
+}
+
+.confidence-dot--half {
+  background: linear-gradient(to right, var(--color-sage) 50%, transparent 50%);
+}
+
+.deal-card__desc {
+  font-size: 0.82rem;
+  color: var(--color-charcoal-muted);
+  margin-bottom: 10px;
+}
+
+.deal-card__actions {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-apply {
+  flex: 1;
+  padding: 7px 14px;
+  background: var(--color-sage);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-apply:hover {
+  background: var(--color-sage-dark);
+}
+
+.btn-copy {
+  padding: 7px 14px;
+  background: transparent;
+  color: var(--color-charcoal-muted);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-copy:hover {
+  border-color: var(--color-sage);
+  color: var(--color-sage);
+}
+
+.btn-copy.copied {
+  border-color: var(--color-sage);
+  color: var(--color-sage);
+}
+
+/* ============================================
+   STATE C — SETTINGS NEEDED
+   ============================================ */
+.state-setup {
+  padding: 32px 24px;
+  text-align: center;
+}
+
+.setup-illustration {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 16px;
+  background: var(--color-sage-bg);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.setup-illustration svg {
+  width: 36px;
+  height: 36px;
+  stroke: var(--color-sage);
+}
+
+.state-setup h3 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.state-setup p {
+  font-size: 0.85rem;
+  color: var(--color-charcoal-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.btn-open-settings {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  background: var(--color-sage);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-open-settings:hover {
+  background: var(--color-sage-dark);
+}
+
+/* ============================================
+   STATE D — NOT A CHECKOUT
+   ============================================ */
+.state-idle {
+  padding: 32px 24px;
+  text-align: center;
+}
+
+.state-idle__icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 12px;
+  background: var(--color-bg-warm);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.state-idle__icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--color-charcoal-muted);
+}
+
+.state-idle p {
+  font-size: 0.9rem;
+  color: var(--color-charcoal-muted);
+  margin-bottom: 16px;
+}
+
+.btn-search-anyway {
+  display: inline-flex;
+  padding: 8px 20px;
+  background: transparent;
+  color: var(--color-sage);
+  border: 1.5px solid var(--color-sage);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-search-anyway:hover {
+  background: var(--color-sage);
+  color: #fff;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.popup-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.popup-footer__text {
+  font-size: 0.72rem;
+  color: var(--color-charcoal-muted);
+  opacity: 0.6;
+}

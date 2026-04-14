@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DealKey Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+
+  <div class="settings-container">
+
+    <!-- Header -->
+    <div class="settings-header">
+      <span class="settings-header__logo">DealKey</span>
+      <p class="settings-header__subtitle">Settings</p>
+    </div>
+
+    <!-- Provider Selection -->
+    <div class="provider-section">
+      <p class="provider-section__label">AI Provider</p>
+      <div class="provider-cards" id="providerCards">
+
+        <label class="provider-card selected" data-provider="claude">
+          <input type="radio" name="provider" value="claude" checked>
+          <span class="provider-card__radio"></span>
+          <span class="provider-card__icon">C</span>
+          <div class="provider-card__info">
+            <span class="provider-card__name">Claude <span class="provider-card__badge">Recommended</span></span>
+            <p class="provider-card__desc">Best accuracy for finding valid discount codes</p>
+          </div>
+        </label>
+
+        <label class="provider-card" data-provider="openai">
+          <input type="radio" name="provider" value="openai">
+          <span class="provider-card__radio"></span>
+          <span class="provider-card__icon">O</span>
+          <div class="provider-card__info">
+            <span class="provider-card__name">OpenAI</span>
+            <p class="provider-card__desc">Reliable alternative, works with any OpenAI plan</p>
+          </div>
+        </label>
+
+        <label class="provider-card" data-provider="openrouter">
+          <input type="radio" name="provider" value="openrouter">
+          <span class="provider-card__radio"></span>
+          <span class="provider-card__icon">R</span>
+          <div class="provider-card__info">
+            <span class="provider-card__name">OpenRouter</span>
+            <p class="provider-card__desc">Access multiple models from a single key</p>
+          </div>
+        </label>
+
+      </div>
+    </div>
+
+    <!-- API Key Input -->
+    <div class="key-section">
+      <p class="key-section__label">API Key</p>
+      <div class="key-input-wrapper">
+        <input type="password" class="key-input" id="apiKeyInput" placeholder="sk-..." autocomplete="off" spellcheck="false">
+        <button class="key-toggle" id="keyToggle">Show</button>
+      </div>
+    </div>
+
+    <!-- Save -->
+    <div class="save-section">
+      <button class="btn-save" id="saveBtn">Save settings</button>
+      <div class="toast" id="toast"></div>
+    </div>
+
+    <!-- Privacy Note -->
+    <div class="privacy-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+      <p class="privacy-note__text">
+        <strong>Your key never leaves your browser.</strong>
+        It's stored in Chrome's secure local storage. DealKey has no servers, no analytics, and no telemetry. The source code is open on GitHub.
+      </p>
+    </div>
+
+  </div>
+
+  <script>
+    // Provider card selection
+    document.querySelectorAll('.provider-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.provider-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        card.querySelector('input[type="radio"]').checked = true;
+
+        // Update placeholder based on provider
+        const provider = card.dataset.provider;
+        const input = document.getElementById('apiKeyInput');
+        const placeholders = {
+          claude: 'sk-ant-...',
+          openai: 'sk-...',
+          openrouter: 'sk-or-...'
+        };
+        input.placeholder = placeholders[provider] || 'sk-...';
+      });
+    });
+
+    // Show/hide toggle
+    const keyInput = document.getElementById('apiKeyInput');
+    const keyToggle = document.getElementById('keyToggle');
+    keyToggle.addEventListener('click', () => {
+      const isPassword = keyInput.type === 'password';
+      keyInput.type = isPassword ? 'text' : 'password';
+      keyToggle.textContent = isPassword ? 'Hide' : 'Show';
+    });
+
+    // Save settings
+    const saveBtn = document.getElementById('saveBtn');
+    const toast = document.getElementById('toast');
+
+    saveBtn.addEventListener('click', () => {
+      const provider = document.querySelector('input[name="provider"]:checked').value;
+      const apiKey = keyInput.value.trim();
+
+      if (!apiKey) {
+        showToast('Please enter an API key', 'error');
+        return;
+      }
+
+      saveBtn.classList.add('saving');
+      saveBtn.textContent = 'Saving...';
+
+      // Save to Chrome storage
+      if (typeof chrome !== 'undefined' && chrome.storage) {
+        chrome.storage.local.set({ provider, apiKey }, () => {
+          onSaveSuccess();
+        });
+      } else {
+        // Fallback for testing outside extension
+        localStorage.setItem('dealkey_provider', provider);
+        localStorage.setItem('dealkey_apiKey', apiKey);
+        setTimeout(onSaveSuccess, 400);
+      }
+    });
+
+    function onSaveSuccess() {
+      saveBtn.classList.remove('saving');
+      saveBtn.classList.add('saved');
+      saveBtn.textContent = 'Saved';
+      showToast('Settings saved successfully', 'success');
+
+      setTimeout(() => {
+        saveBtn.classList.remove('saved');
+        saveBtn.textContent = 'Save settings';
+      }, 2000);
+    }
+
+    function showToast(message, type) {
+      toast.textContent = message;
+      toast.className = 'toast visible ' + type;
+      setTimeout(() => {
+        toast.classList.remove('visible');
+      }, 3000);
+    }
+
+    // Load saved settings
+    function loadSettings() {
+      if (typeof chrome !== 'undefined' && chrome.storage) {
+        chrome.storage.local.get(['provider', 'apiKey'], (result) => {
+          if (result.provider) {
+            const card = document.querySelector(`[data-provider="${result.provider}"]`);
+            if (card) {
+              document.querySelectorAll('.provider-card').forEach(c => c.classList.remove('selected'));
+              card.classList.add('selected');
+              card.querySelector('input[type="radio"]').checked = true;
+            }
+          }
+          if (result.apiKey) {
+            keyInput.value = result.apiKey;
+          }
+        });
+      } else {
+        const provider = localStorage.getItem('dealkey_provider');
+        const apiKey = localStorage.getItem('dealkey_apiKey');
+        if (provider) {
+          const card = document.querySelector(`[data-provider="${provider}"]`);
+          if (card) {
+            document.querySelectorAll('.provider-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            card.querySelector('input[type="radio"]').checked = true;
+          }
+        }
+        if (apiKey) keyInput.value = apiKey;
+      }
+    }
+
+    loadSettings();
+  </script>
+</body>
+</html>
