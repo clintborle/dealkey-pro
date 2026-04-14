@@ -7,7 +7,8 @@ const STATES = {
   LOADING: 'stateLoading',
   RESULTS: 'stateResults',
   SETUP: 'stateSetup',
-  IDLE: 'stateIdle'
+  IDLE: 'stateIdle',
+  UPGRADE: 'stateUpgrade'
 };
 
 // Show a specific state, hide others
@@ -131,6 +132,20 @@ async function init() {
     }
   });
 
+  // License gate — show upgrade card if no valid license stored
+  const hasLicense = await checkLicense();
+  if (!hasLicense) {
+    showState(STATES.UPGRADE);
+    document.getElementById('openSettingsLicense').addEventListener('click', () => {
+      if (typeof chrome !== 'undefined' && chrome.runtime) {
+        chrome.runtime.openOptionsPage();
+      } else {
+        window.open('settings.html', '_blank');
+      }
+    });
+    return;
+  }
+
   // Search anyway handler
   document.getElementById('searchAnyway').addEventListener('click', () => {
     showState(STATES.LOADING);
@@ -206,6 +221,20 @@ function checkApiKey() {
       });
     } else {
       resolve(!!localStorage.getItem('dealkey_apiKey'));
+    }
+  });
+}
+
+// Check for a valid stored license. Trusts cached result for speed; offline is graceful.
+function checkLicense() {
+  return new Promise((resolve) => {
+    if (typeof chrome !== 'undefined' && chrome.storage) {
+      chrome.storage.local.get(['licenseKey', 'licenseValid'], (result) => {
+        resolve(!!(result.licenseKey && result.licenseValid));
+      });
+    } else {
+      // Outside extension context (dev/demo) — skip gate
+      resolve(true);
     }
   });
 }

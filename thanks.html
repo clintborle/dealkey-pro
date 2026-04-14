@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>You're in — DealKey Pro</title>
+  <meta name="description" content="Your DealKey Pro purchase is confirmed. Check your email for your license key." />
+  <meta name="robots" content="noindex" />
+
+  <!-- OG -->
+  <meta property="og:title" content="Welcome to DealKey Pro" />
+  <meta property="og:description" content="Your AI discount code finder is ready." />
+  <meta property="og:url" content="https://deal-key.com/thanks.html" />
+  <meta property="og:type" content="website" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:      #F7F3ED;
+      --cream-dark: #EDE8E0;
+      --sage:       #6B8F6B;
+      --sage-light: #8AAD8A;
+      --sage-pale:  #E8F0E8;
+      --charcoal:   #2A2825;
+      --charcoal-60:#2A282599;
+      --terra:      #C4785A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--charcoal);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+    }
+
+    /* ── Wordmark ── */
+    .wordmark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--charcoal);
+      text-decoration: none;
+      text-transform: uppercase;
+      margin-bottom: 64px;
+      opacity: 0.7;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: white;
+      border-radius: 24px;
+      padding: 56px 48px;
+      max-width: 540px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 2px 32px rgba(42, 40, 37, 0.07);
+    }
+
+    /* ── Checkmark ── */
+    .check-ring {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--sage-pale);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 32px;
+    }
+
+    .check-ring svg {
+      width: 32px;
+      height: 32px;
+      stroke: var(--sage);
+    }
+
+    /* ── Typography ── */
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.25rem;
+      font-weight: 500;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      color: var(--charcoal);
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--charcoal-60);
+      margin-bottom: 40px;
+    }
+
+    .subtitle strong {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    /* ── Step list ── */
+    .steps {
+      background: var(--cream);
+      border-radius: 16px;
+      padding: 24px 28px;
+      text-align: left;
+      margin-bottom: 40px;
+    }
+
+    .steps-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--charcoal-60);
+      margin-bottom: 16px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--charcoal);
+      margin-bottom: 12px;
+    }
+
+    .step:last-child { margin-bottom: 0; }
+
+    .step-num {
+      background: var(--sage);
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── CTA buttons ── */
+    .btn-primary {
+      display: inline-block;
+      background: var(--sage);
+      color: white;
+      border-radius: 100px;
+      padding: 14px 32px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: background 0.2s, transform 0.15s;
+      margin-bottom: 14px;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background: var(--sage-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      color: var(--charcoal-60);
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .btn-secondary:hover { color: var(--charcoal); }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 56px;
+      font-size: 0.78rem;
+      color: var(--charcoal-60);
+      text-align: center;
+    }
+
+    footer a {
+      color: var(--charcoal-60);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+    }
+
+    footer a:hover { color: var(--charcoal); }
+
+    /* ── Responsive ── */
+    @media (max-width: 560px) {
+      .card { padding: 40px 28px; }
+      h1 { font-size: 1.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a class="wordmark" href="https://deal-key.com">DealKey</a>
+
+  <div class="card">
+
+    <div class="check-ring">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
+    </div>
+
+    <h1>You're in.</h1>
+
+    <p class="subtitle">
+      Your license key is on its way. Check your inbox —
+      it usually arrives within <strong>a minute or two</strong>.
+    </p>
+
+    <div class="steps">
+      <div class="steps-label">Next steps</div>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <span>Open the email from Lemon Squeezy and copy your license key.</span>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <span>Install DealKey Pro from the Chrome Web Store.</span>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <span>Click the extension icon → Settings → paste your license key → click Validate.</span>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <span>Add your AI API key (Claude, OpenAI, or OpenRouter) and start saving.</span>
+      </div>
+    </div>
+
+    <!-- REPLACE href with your real Chrome Web Store listing URL -->
+    <a class="btn-primary" href="CHROME_WEB_STORE_URL_HERE" target="_blank" rel="noopener">
+      Install from Chrome Web Store
+    </a>
+
+    <br />
+    <a class="btn-secondary" href="https://deal-key.com">Back to deal-key.com</a>
+
+  </div>
+
+  <footer>
+    Questions? Email <a href="mailto:hello@deal-key.com">hello@deal-key.com</a>
+    &nbsp;·&nbsp;
+    <a href="https://deal-key.com/privacy.html">Privacy Policy</a>
+  </footer>
+
+</body>
+</html>

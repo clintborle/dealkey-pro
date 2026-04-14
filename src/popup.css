@@ -375,3 +375,43 @@ body {
   color: var(--color-charcoal-muted);
   opacity: 0.6;
 }
+
+/* ============================================
+   UPGRADE STATE
+   ============================================ */
+.state-upgrade {
+  padding: 20px 16px 24px;
+  text-align: center;
+}
+
+.upgrade-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(107, 143, 107, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+}
+
+.upgrade-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--color-sage);
+}
+
+.state-upgrade h3 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--color-charcoal);
+}
+
+.state-upgrade p {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--color-charcoal-muted);
+  margin-bottom: 16px;
+}

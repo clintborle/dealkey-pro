@@ -19,6 +19,25 @@
       <p class="settings-header__subtitle">Settings</p>
     </div>
 
+    <!-- License Key -->
+    <div class="license-section" id="licenseSection">
+      <p class="provider-section__label">License</p>
+
+      <div id="licenseStatusBanner" style="display:none; margin-bottom:12px; padding:10px 14px; border-radius:8px; font-size:0.82rem; font-weight:500; display:flex; align-items:center; gap:8px;"></div>
+
+      <div class="key-input-wrapper" style="margin-bottom:8px;">
+        <input type="text" class="key-input" id="licenseKeyInput" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" autocomplete="off" spellcheck="false" style="font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size:0.82rem; letter-spacing:0.02em;">
+        <button class="key-toggle" id="validateBtn">Validate</button>
+      </div>
+      <div id="licenseFeedback" style="font-size:0.78rem; min-height:18px; margin-bottom:4px;"></div>
+
+      <div id="upgradeNudge" style="display:none; margin-top:8px; font-size:0.8rem; color:#7A7672;">
+        No license? <a href="LEMON_SQUEEZY_CHECKOUT_URL_HERE" target="_blank" rel="noopener" style="color:#6B8F6B; font-weight:500; text-decoration:none;">Get DealKey Pro — $19 →</a>
+      </div>
+    </div>
+
+    <hr style="border:none; border-top:1px solid rgba(42,40,37,0.08); margin:16px 0;">
+
     <!-- Provider Selection -->
     <div class="provider-section">
       <p class="provider-section__label">AI Provider</p>
@@ -195,6 +214,105 @@
     }
 
     loadSettings();
+
+    // ── License validation ──────────────────────────────────────────────────
+
+    const LS_VALIDATE_URL  = 'https://api.lemonsqueezy.com/v1/licenses/validate';
+    const LS_INSTANCE_NAME = 'DealKey Chrome';
+
+    const licenseKeyInput  = document.getElementById('licenseKeyInput');
+    const validateBtn      = document.getElementById('validateBtn');
+    const licenseStatusBanner = document.getElementById('licenseStatusBanner');
+    const licenseFeedback  = document.getElementById('licenseFeedback');
+    const upgradeNudge     = document.getElementById('upgradeNudge');
+
+    async function validateLicense(key) {
+      if (!key || key.trim().length < 10) return { valid: false, error: 'Enter a valid license key.' };
+
+      if (!navigator.onLine) {
+        const s = await chrome.storage.local.get(['licenseKey', 'licenseValid']);
+        if (s.licenseKey === key.trim() && s.licenseValid) return { valid: true, offline: true };
+        return { valid: false, error: 'Offline — connect to validate.' };
+      }
+
+      try {
+        const res = await fetch(LS_VALIDATE_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ license_key: key.trim(), instance_name: LS_INSTANCE_NAME })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.activated) return { valid: true };
+        if (res.status === 400 && data.error === 'invalid_instance_id') return { valid: true };
+        if (data.error === 'activation_limit_reached') return { valid: false, error: 'Activation limit reached — contact support to reset.' };
+
+        return { valid: false, error: data.message || data.error || 'Invalid license key.' };
+      } catch {
+        return { valid: false, error: 'Could not reach license server — check your connection.' };
+      }
+    }
+
+    function showLicenseValid(offline) {
+      licenseStatusBanner.style.display = 'flex';
+      licenseStatusBanner.style.background = 'rgba(107,143,107,0.12)';
+      licenseStatusBanner.style.color = '#3a6b3a';
+      licenseStatusBanner.innerHTML = offline
+        ? '✓ Pro unlocked (offline — using cached validation)'
+        : '✓ Pro unlocked';
+      licenseFeedback.textContent = '';
+      upgradeNudge.style.display = 'none';
+    }
+
+    function showLicenseInvalid(msg) {
+      licenseStatusBanner.style.display = 'none';
+      licenseFeedback.style.color = '#C4785A';
+      licenseFeedback.textContent = msg;
+      upgradeNudge.style.display = 'block';
+    }
+
+    validateBtn.addEventListener('click', async () => {
+      const key = licenseKeyInput.value.trim();
+      if (!key) { showLicenseInvalid('Enter your license key first.'); return; }
+
+      validateBtn.disabled = true;
+      validateBtn.textContent = 'Checking…';
+      licenseFeedback.textContent = '';
+
+      const result = await validateLicense(key);
+
+      if (result.valid) {
+        await chrome.storage.local.set({ licenseKey: key, licenseValid: true });
+        showLicenseValid(result.offline);
+      } else {
+        await chrome.storage.local.set({ licenseKey: key, licenseValid: false });
+        showLicenseInvalid(result.error);
+      }
+
+      validateBtn.disabled = false;
+      validateBtn.textContent = 'Validate';
+    });
+
+    licenseKeyInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') validateBtn.click();
+    });
+
+    // Load saved license state
+    if (typeof chrome !== 'undefined' && chrome.storage) {
+      chrome.storage.local.get(['licenseKey', 'licenseValid'], (result) => {
+        if (result.licenseKey) {
+          licenseKeyInput.value = result.licenseKey;
+          if (result.licenseValid) {
+            showLicenseValid(false);
+          } else {
+            showLicenseInvalid('Previously saved key is invalid — try re-validating.');
+            upgradeNudge.style.display = 'block';
+          }
+        } else {
+          upgradeNudge.style.display = 'block';
+        }
+      });
+    }
   </script>
 </body>
 </html>
