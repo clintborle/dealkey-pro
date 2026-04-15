@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — DealKey</title>
+  <meta name="description" content="DealKey privacy policy. We don't collect your data. Here's what that actually means." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F7F3ED;
+      --sage: #6B8F6B;
+      --charcoal: #2A2825;
+      --charcoal-60: rgba(42,40,37,0.6);
+      --border: rgba(42,40,37,0.08);
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--charcoal);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.7;
+      padding: 0 24px;
+    }
+
+    nav {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 28px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .wordmark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      text-decoration: none;
+    }
+
+    nav a.back {
+      font-size: 0.82rem;
+      color: var(--charcoal-60);
+      text-decoration: none;
+    }
+
+    nav a.back:hover { color: var(--charcoal); }
+
+    .content {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 56px 0 96px;
+    }
+
+    .label {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--charcoal-60);
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 500;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .updated {
+      font-size: 0.82rem;
+      color: var(--charcoal-60);
+      margin-bottom: 48px;
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin: 40px 0 12px;
+    }
+
+    p { margin-bottom: 16px; }
+
+    ul {
+      margin: 0 0 16px 20px;
+    }
+
+    ul li { margin-bottom: 8px; }
+
+    a { color: var(--sage); text-decoration: none; border-bottom: 1px solid currentColor; }
+    a:hover { opacity: 0.75; }
+
+    .highlight-box {
+      background: white;
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin: 32px 0;
+      border-left: 3px solid var(--sage);
+    }
+
+    .highlight-box p { margin: 0; font-weight: 400; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+    footer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 0 48px;
+      font-size: 0.8rem;
+      color: var(--charcoal-60);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="wordmark" href="/">DealKey</a>
+  <a class="back" href="/">← Back to deal-key.com</a>
+</nav>
+
+<div class="content">
+
+  <div class="label">Legal</div>
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: April 15, 2026</p>
+
+  <div class="highlight-box">
+    <p>The short version: DealKey doesn't collect your data. Your API key, browsing activity, and purchase history never leave your browser. There are no DealKey servers processing your information.</p>
+  </div>
+
+  <h2>What DealKey is</h2>
+  <p>DealKey is a Chrome browser extension that uses an AI API key you provide to search for discount codes at checkout. The extension runs entirely within your browser. There are no DealKey servers involved in the code search process.</p>
+
+  <h2>Data we do not collect</h2>
+  <p>DealKey does not collect, transmit, store, or sell any of the following:</p>
+  <ul>
+    <li>Your browsing history or activity</li>
+    <li>The websites you visit or shop on</li>
+    <li>Your purchase history or order values</li>
+    <li>Your AI API key</li>
+    <li>Your name, email address, or any personal information</li>
+    <li>Any analytics, usage data, or telemetry</li>
+  </ul>
+
+  <h2>What stays in your browser</h2>
+  <p>The following data is stored locally in Chrome's secure storage on your device only. It is never transmitted to DealKey:</p>
+  <ul>
+    <li>Your AI provider selection (Claude, OpenAI, or OpenRouter)</li>
+    <li>Your AI API key</li>
+    <li>Your DealKey license key (if you purchased Pro)</li>
+    <li>Cached discount code results for the current session</li>
+  </ul>
+
+  <h2>Third-party API calls</h2>
+  <p>When you use DealKey, your browser makes direct API calls to the following services. These calls go directly from your browser to the provider — DealKey never sees or processes them:</p>
+  <ul>
+    <li><strong>Your AI provider</strong> (Anthropic, OpenAI, or OpenRouter) — to search for discount codes. The page URL is sent to generate relevant results. No personal data is included.</li>
+    <li><strong>Gumroad</strong> — only when you validate a Pro license key. Your license key is sent to confirm it's valid. No other data is transmitted.</li>
+  </ul>
+
+  <h2>Permissions</h2>
+  <p>DealKey requests the following Chrome permissions:</p>
+  <ul>
+    <li><strong>activeTab</strong> — to read the URL of the current checkout page so DealKey can search for relevant codes</li>
+    <li><strong>storage</strong> — to save your API key and settings locally in Chrome</li>
+    <li><strong>scripting</strong> — to detect checkout fields on the page and apply codes automatically</li>
+  </ul>
+  <p>DealKey does not use these permissions to track your activity, read page content outside of checkout detection, or transmit any data to external servers.</p>
+
+  <h2>Open source</h2>
+  <p>DealKey's source code is publicly available on <a href="https://github.com/clintborle/dealkey-pro" target="_blank" rel="noopener">GitHub</a>. You can verify exactly what the extension does and doesn't do.</p>
+
+  <h2>Changes to this policy</h2>
+  <p>If this policy changes, the updated date at the top of this page will reflect it. We will not retroactively change data practices — any changes will only apply going forward.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about privacy? Email <a href="mailto:hello@deal-key.com">hello@deal-key.com</a>.</p>
+
+  <hr />
+
+  <p style="font-size:0.82rem; color:var(--charcoal-60);">DealKey is an independent product. It is not affiliated with any retailer, AI provider, or payment processor.</p>
+
+</div>
+
+<footer>
+  © 2026 DealKey &nbsp;·&nbsp;
+  <a href="/">deal-key.com</a> &nbsp;·&nbsp;
+  <a href="mailto:hello@deal-key.com">hello@deal-key.com</a>
+</footer>
+
+</body>
+</html>

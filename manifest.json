@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "DealKey — AI Discount Code Finder",
   "version": "1.0.0",
-  "description": "Find real discount codes at checkout using your own AI key. No tracking, no servers, no affiliate hijacking.",
+  "description": "Find real discount codes at checkout using your own AI key. No tracking, no servers, no middlemen. Your AI. Your savings.",
   "permissions": [
     "activeTab",
     "storage",
@@ -11,7 +11,8 @@
   "host_permissions": [
     "https://api.anthropic.com/*",
     "https://api.openai.com/*",
-    "https://openrouter.ai/*"
+    "https://openrouter.ai/*",
+    "https://api.gumroad.com/*"
   ],
   "action": {
     "default_popup": "src/popup.html",

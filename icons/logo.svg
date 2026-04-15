@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Background -->
+  <rect width="200" height="200" rx="40" fill="#F7F3ED"/>
+
+  <!-- Key shape in sage green -->
+  <!-- Key bow (circle) -->
+  <circle cx="82" cy="82" r="28" fill="none" stroke="#6B8F6B" stroke-width="12"/>
+
+  <!-- Key stem -->
+  <line x1="102" y1="102" x2="148" y2="148" stroke="#6B8F6B" stroke-width="12" stroke-linecap="round"/>
+
+  <!-- Key teeth -->
+  <line x1="135" y1="135" x2="135" y2="150" stroke="#6B8F6B" stroke-width="9" stroke-linecap="round"/>
+  <line x1="148" y1="148" x2="133" y2="148" stroke="#6B8F6B" stroke-width="9" stroke-linecap="round"/>
+
+  <!-- Small inner circle cutout feel -->
+  <circle cx="82" cy="82" r="10" fill="#6B8F6B"/>
+</svg>
