@@ -217,8 +217,9 @@
 
     // ── License validation ──────────────────────────────────────────────────
 
-    const LS_VALIDATE_URL  = 'https://api.lemonsqueezy.com/v1/licenses/validate';
-    const LS_INSTANCE_NAME = 'DealKey Chrome';
+    // Gumroad product permalink — the short ID from the product URL
+    const GUMROAD_PRODUCT_ID = 'hvwmcj';
+    const GUMROAD_VERIFY_URL = 'https://api.gumroad.com/v2/licenses/verify';
 
     const licenseKeyInput  = document.getElementById('licenseKeyInput');
     const validateBtn      = document.getElementById('validateBtn');
@@ -236,18 +237,23 @@
       }
 
       try {
-        const res = await fetch(LS_VALIDATE_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ license_key: key.trim(), instance_name: LS_INSTANCE_NAME })
+        const body = new URLSearchParams({
+          product_permalink: GUMROAD_PRODUCT_ID,
+          license_key: key.trim(),
+          increment_uses_count: 'false'
         });
+
+        const res = await fetch(GUMROAD_VERIFY_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString()
+        });
+
         const data = await res.json();
 
-        if (res.ok && data.activated) return { valid: true };
-        if (res.status === 400 && data.error === 'invalid_instance_id') return { valid: true };
-        if (data.error === 'activation_limit_reached') return { valid: false, error: 'Activation limit reached — contact support to reset.' };
+        if (data.success) return { valid: true };
 
-        return { valid: false, error: data.message || data.error || 'Invalid license key.' };
+        return { valid: false, error: data.message || 'Invalid license key.' };
       } catch {
         return { valid: false, error: 'Could not reach license server — check your connection.' };
       }
