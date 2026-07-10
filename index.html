@@ -684,72 +684,6 @@
     }
 
     /* ============================================
-       COMPARISON TABLE
-       ============================================ */
-    .comparison { background: var(--color-bg-warm); }
-
-    .comparison-table-wrapper {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .comparison-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      background: var(--color-bg-card);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow-soft);
-      min-width: 600px;
-    }
-
-    .comparison-table thead th {
-      padding: 1.2rem 1.5rem;
-      text-align: left;
-      font-family: var(--font-serif);
-      font-size: 1.1rem;
-      font-weight: 600;
-      background: var(--color-bg);
-      border-bottom: 2px solid var(--color-border);
-    }
-
-    .comparison-table thead th:first-child {
-      border-radius: var(--radius-lg) 0 0 0;
-    }
-
-    .comparison-table thead th:last-child {
-      border-radius: 0 var(--radius-lg) 0 0;
-    }
-
-    .comparison-table thead th.highlight {
-      background: var(--color-sage);
-      color: #fff;
-    }
-
-    .comparison-table td {
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid var(--color-border);
-      font-size: 0.9rem;
-    }
-
-    .comparison-table td:first-child {
-      font-weight: 600;
-      color: var(--color-charcoal);
-    }
-
-    .comparison-table td.highlight {
-      background: var(--color-sage-bg);
-    }
-
-    .comparison-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .check { color: var(--color-sage); font-weight: 700; }
-    .cross { color: var(--color-charcoal-muted); opacity: 0.4; }
-
-    /* ============================================
        PRICING
        ============================================ */
     .pricing { background: var(--color-bg); }
@@ -1249,101 +1183,30 @@
   </section>
 
   <!-- ========== WHAT HONEY DID ========== -->
-  <section class="honey-section" id="honey">
+  <!-- ========== PRIVACY SECTION ========== -->
+  <section class="honey-section" id="privacy">
     <div class="container">
       <div class="section-header fade-in">
-        <span class="section-header__label">Why this exists</span>
-        <h2>The old model was broken by design.</h2>
-        <p>Most coupon extensions aren't built to save you money. They're built to collect your data, replace affiliate links, and get acquired.</p>
+        <span class="section-header__label">Privacy</span>
+        <h2>Your data stays in your browser. Full stop.</h2>
+        <p>DealKey has no servers, no analytics, and no telemetry. Here's exactly what that means.</p>
       </div>
       <div class="honey-grid">
         <div class="honey-card fade-in">
-          <div class="honey-card__stat">Free*</div>
-          <div class="honey-card__label">The real price</div>
-          <p class="honey-card__desc">*You pay with your shopping history, browsing behaviour, and purchase data. That's what makes these extensions worth billions.</p>
+          <div class="honey-card__stat">0</div>
+          <div class="honey-card__label">Servers</div>
+          <p class="honey-card__desc">DealKey runs entirely in your browser. Your API key and shopping activity never touch a DealKey server — because there isn't one.</p>
         </div>
         <div class="honey-card fade-in">
-          <div class="honey-card__stat">Hijacked</div>
-          <div class="honey-card__label">Your affiliate links</div>
-          <p class="honey-card__desc">Extensions that run through central servers can silently replace the affiliate links of creators you chose to support — keeping the commission for themselves.</p>
+          <div class="honey-card__stat">0</div>
+          <div class="honey-card__label">Data collected</div>
+          <p class="honey-card__desc">No purchase history. No browsing data. No analytics. No telemetry. DealKey has no idea who you are or what you buy.</p>
         </div>
         <div class="honey-card fade-in">
-          <div class="honey-card__stat">$0</div>
-          <div class="honey-card__label">Your real savings</div>
-          <p class="honey-card__desc">Extensions using pre-scraped code databases often surface expired or irrelevant codes — sometimes worse than what was already applied at checkout.</p>
+          <div class="honey-card__stat">100%</div>
+          <div class="honey-card__label">Open source</div>
+          <p class="honey-card__desc">The full source code is on GitHub. You don't have to take our word for any of this — read the code yourself and verify.</p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== COMPARISON TABLE ========== -->
-  <section class="comparison" id="comparison">
-    <div class="container">
-      <div class="section-header fade-in">
-        <span class="section-header__label">Compare</span>
-        <h2>A better deal on deal-finding</h2>
-      </div>
-      <div class="comparison-table-wrapper fade-in">
-        <table class="comparison-table">
-          <thead>
-            <tr>
-              <th>Feature</th>
-              <th class="highlight">DealKey Pro</th>
-              <th>DealKey Free</th>
-              <th>Other extensions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>AI-powered code search</td>
-              <td class="highlight"><span class="check">&#10003;</span></td>
-              <td><span class="check">&#10003;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-            </tr>
-            <tr>
-              <td>Your data stays private</td>
-              <td class="highlight"><span class="check">&#10003;</span></td>
-              <td><span class="check">&#10003;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-            </tr>
-            <tr>
-              <td>Open source</td>
-              <td class="highlight"><span class="check">&#10003;</span></td>
-              <td><span class="check">&#10003;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-            </tr>
-            <tr>
-              <td>No affiliate hijacking</td>
-              <td class="highlight"><span class="check">&#10003;</span></td>
-              <td><span class="check">&#10003;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-            </tr>
-            <tr>
-              <td>Auto-updates via Chrome Web Store</td>
-              <td class="highlight"><span class="check">&#10003;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-              <td><span class="check">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td>Auto-apply codes</td>
-              <td class="highlight"><span class="check">&#10003;</span></td>
-              <td><span class="check">&#10003;</span></td>
-              <td><span class="check">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td>Email support</td>
-              <td class="highlight"><span class="check">&#10003;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-              <td><span class="check">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td>Price</td>
-              <td class="highlight"><strong>$19 once</strong></td>
-              <td><strong>Free</strong></td>
-              <td><strong>Free*</strong> <span style="font-size:0.78rem;color:var(--color-charcoal-muted);">(*you pay with data)</span></td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
   </section>
@@ -1380,7 +1243,6 @@
             <li>Email support</li>
             <li>Support indie development</li>
           </ul>
-          <!-- REPLACE href with your Lemon Squeezy checkout URL from SETUP.md -->
           <a href="https://5841653014751.gumroad.com/l/dealkey-pro" class="btn btn--primary" style="width:100%;justify-content:center;" target="_blank" rel="noopener">Get DealKey Pro</a>
         </div>
       </div>
@@ -1398,11 +1260,11 @@
 
         <div class="faq-card fade-in">
           <div class="faq-card__question">
-            How is this different from other coupon extensions?
+            Why does DealKey use my own AI key?
             <span class="faq-card__toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
           </div>
           <div class="faq-card__answer">
-            <p>Most coupon extensions run through central servers that log your shopping behaviour, replace affiliate links, and sell your data. DealKey runs entirely in your browser using your own AI key. There are no servers, no tracking, and no middlemen taking a cut.</p>
+            <p>Using your own key means DealKey never needs to run a server that processes your requests. Your shopping activity goes directly from your browser to your AI provider — nobody else sees it. It also means the cost is fractions of a cent per search, billed directly to you at wholesale AI rates.</p>
           </div>
         </div>
 
